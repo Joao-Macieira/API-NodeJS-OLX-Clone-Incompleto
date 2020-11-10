@@ -3,6 +3,9 @@ const router = express.Router();
 
 const Auth = require('./middlewares/Auth');
 
+const AuthValidator = require("./validators/AuthValidator");
+const UserValidator = require('./validators/UserValidator');
+
 const AuthController = require('./controllers/AuthController');
 const UserController = require('./controllers/UserController');
 const AdsController = require('./controllers/AdsController');
@@ -13,11 +16,11 @@ router.get('/ping', (req, res) => {
 
 router.get('/states', UserController.getStates); // List States
 
-router.post('/user/signin', AuthController.signin); // Login
-router.post('/user/singup', AuthController.signup); // Logout
+router.post('/user/signin', AuthValidator.signin, AuthController.signin); // Login
+router.post('/user/signup', AuthValidator.signup, AuthController.signup); // Cadastrar
 
 router.get('/user/me', Auth.private, UserController.info); // Get user info
-router.put('/user/me', Auth.private, UserController.editAction); // Edit user infomations
+router.put('/user/me',UserValidator.editAction, Auth.private, UserController.editAction); // Edit user infomations
 
 router.get('/categories', AdsController.getCategories); //Get all categories
 
